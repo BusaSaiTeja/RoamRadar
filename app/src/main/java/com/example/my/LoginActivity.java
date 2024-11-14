@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +15,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
-    private TextView signUpTextView;
     private FirebaseAuth mAuth;
 
     @Override
@@ -30,15 +28,8 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
-        signUpTextView = findViewById(R.id.signUpTextView);
 
         loginButton.setOnClickListener(v -> handleLogin());
-
-        // This line makes sure clicking on "Sign Up" opens the SignUpActivity
-        signUpTextView.setOnClickListener(v -> {
-            // Navigate to SignUpActivity
-            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-        });
     }
 
     private void handleLogin() {

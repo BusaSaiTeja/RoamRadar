@@ -1,6 +1,6 @@
 package com.example.my;
 
-// This is the User model class
+// This is the User model class for firebase
 public class User {
     private String email;
 

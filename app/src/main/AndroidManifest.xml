@@ -18,10 +18,6 @@
         android:theme="@style/Theme.MY"
         tools:targetApi="31">
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_api_key" />
-
         <!-- Login Activity (Launcher Activity) -->
         <activity
             android:name=".LoginActivity"
