@@ -2,24 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TextView to display Hello -->
+    <!-- Your main content can go here (e.g., TextViews, Buttons, etc.) -->
     <TextView
-        android:id="@+id/helloTextView"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello"
-        android:textSize="24sp"
-        android:layout_centerInParent="true" />
+        android:text="Hello, World!"
+        android:layout_centerInParent="true"/>
 
-    <!-- Logout Button -->
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
+    <!-- Bottom Navigation View -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"
-        android:layout_below="@id/helloTextView"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+    android:background="?android:attr/windowBackground"
+    app:menu="@menu/bottom_nav_menu" />  <!-- Reference to your menu file -->
+
 </RelativeLayout>
