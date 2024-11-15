@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
         android:title="Home"
-         />
-
+        android:titleTextColor="@color/bottom_nav_item_selected"/>
     <item
         android:id="@+id/profile"
-        android:title="Profile" />
+        android:title="Profile"
+        android:titleTextColor="@color/bottom_nav_item_unselected"/>
 
     <item
         android:id="@+id/logout"
-        android:title="Logout"/>
+        android:title="Logout"
+        android:titleTextColor="@color/bottom_nav_item_unselected"/>
 </menu>
