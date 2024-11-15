@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         if (user != null && user.isEmailVerified()) {
                                             // Navigate to MainActivity after successful login
-                                            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                            Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
                                             startActivity(mainIntent);
                                             finish(); // Close the login activity
                                         } else {
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Please verify your email to log in.", Toast.LENGTH_SHORT).show();
             } else {
                 // User is verified, proceed to MainActivity
-                Intent mainIntent = new Intent(this, MainActivity.class);
+                Intent mainIntent = new Intent(this, HomeActivity.class);
                 startActivity(mainIntent);
                 finish();
             }
