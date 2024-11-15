@@ -1,10 +1,16 @@
 package com.example.roamradar;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,6 +19,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     protected BottomNavigationView bottomNavigationView;
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Request location permission when BaseActivity is created
+        requestLocationPermission();
     }
 
     // Override this method in your child activity to specify the layout resource
@@ -73,6 +84,41 @@ public abstract class BaseActivity extends AppCompatActivity {
             bottomNavigationView.setSelectedItemId(R.id.home);
         } else if (this instanceof ProfileActivity) {
             bottomNavigationView.setSelectedItemId(R.id.profile);
+        }
+    }
+
+    // Request location permission
+    private void requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            // If permission is granted, start the location service
+            startLocationService();
+        } else {
+            // If permission is not granted, request the permission
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    // Start the location service
+    private void startLocationService() {
+        // Start the LocationService once permission is granted
+        Intent serviceIntent = new Intent(this, LocationService.class);
+        startService(serviceIntent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, start the location service
+                startLocationService();
+            } else {
+                // Permission denied, show a message to the user
+                Toast.makeText(this, "Permission denied. Cannot fetch location.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

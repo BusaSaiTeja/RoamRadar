@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.roamradar">
 
+    <!-- Permissions for Internet and Location -->
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +19,7 @@
         android:theme="@style/Theme.RoamRadar"
         tools:targetApi="31">
 
+        <!-- Main Entry Point (Launcher Activity) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
@@ -26,9 +30,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SignUpActivity"  android:exported="false" />
+        <!-- Other Activities -->
+        <activity android:name=".SignUpActivity" android:exported="false" />
         <activity android:name=".ProfileActivity" android:exported="false" />
         <activity android:name=".HomeActivity" android:exported="false" />
+
+        <!-- Firebase Cloud Messaging Service (exported=true because it needs to receive messages from Firebase) -->
+        <service android:name=".MyFirebaseMessagingService" android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- LocationService for background location updates (exported=false because it's used internally by the app) -->
+        <service android:name=".LocationService" android:enabled="true" android:exported="false" />
 
     </application>
 

@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -82,7 +83,11 @@ public class SignUpActivity extends AppCompatActivity {
         Map<String, Object> userData = new HashMap<>();
         userData.put("userId", user.getUid());
         userData.put("email", user.getEmail());
-        userData.put("sendNotifications", false); // Default value
+        userData.put("sendNotifications", false);
+
+        GeoPoint defaultLocation = new GeoPoint(0.0, 0.0);
+        userData.put("location", defaultLocation);
+
 
         // Save data to Firestore
         db.collection("users").document(user.getUid())
