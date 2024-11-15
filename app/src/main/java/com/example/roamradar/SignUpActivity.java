@@ -9,15 +9,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db; // Firestore instance
     private EditText emailEditText, passwordEditText;
     private Button signUpButton;
     private TextView loginTextView;
@@ -28,6 +34,8 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance(); // Initialize Firestore
+
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         signUpButton = findViewById(R.id.signUpButton);
@@ -47,6 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         if (user != null) {
+                                            saveUserToFirestore(user); // Save user to Firestore
                                             sendVerificationEmail(user);
                                         }
                                     } else {
@@ -60,13 +69,34 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        // Navigate to login page if login TextView is clicked
         loginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navigateToLogin();
             }
         });
+    }
+
+    private void saveUserToFirestore(FirebaseUser user) {
+        // Create a user map with email and notification preferences
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("userId", user.getUid());
+        userData.put("email", user.getEmail());
+        userData.put("sendNotifications", false); // Default value
+
+        // Save data to Firestore
+        db.collection("users").document(user.getUid())
+                .set(userData)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(SignUpActivity.this, "User registered successfully.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Failed to save user data.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void sendVerificationEmail(FirebaseUser user) {
@@ -76,7 +106,7 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(SignUpActivity.this, "Verification email sent. Please verify to log in.", Toast.LENGTH_SHORT).show();
-                            navigateToLogin(); // Navigate to login after sending verification email
+                            navigateToLogin();
                         } else {
                             Toast.makeText(SignUpActivity.this, "Failed to send verification email.", Toast.LENGTH_SHORT).show();
                         }
@@ -87,6 +117,6 @@ public class SignUpActivity extends AppCompatActivity {
     private void navigateToLogin() {
         Intent loginIntent = new Intent(SignUpActivity.this, LoginActivity.class);
         startActivity(loginIntent);
-        finish(); // Close the sign-up activity
+        finish();
     }
 }
