@@ -3,6 +3,7 @@ package com.example.roamradar;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Log.d("NavBar", "Selected item: " + item.getItemId());
+
                 if (item.getItemId() == R.id.home) {
                     // Avoid opening a new HomeActivity if already on it
                     if (!(BaseActivity.this instanceof HomeActivity)) {

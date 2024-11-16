@@ -20,4 +20,6 @@
         android:layout_centerHorizontal="true"
         android:text="Send Notifications"
         android:layout_marginTop="40dp"/>
+
+
 </RelativeLayout>
